@@ -1,0 +1,19 @@
+﻿{
+  "Name": "MarvalSoftware.Plugins.Statuspage",
+  "Organisation": "MarvalSoftware",
+  "DisplayName": "@@PluginDisplayname",
+  "Icon": "img/statuspage_16.png",
+  "Version": "1.0.8",
+  "SupportedVersions": [
+    "14.15.0",
+    "0.0.0"
+  ],
+  "Pages": [
+    "request.aspx"
+  ],
+  "GlobalSettings": [
+    "@@UserAPIKey"
+  ],
+  "HtmlImportFile": "MarvalSoftware.Plugins.Statuspage.html",
+  "TagName": "marvalsoftware-plugins-statuspage"
+}

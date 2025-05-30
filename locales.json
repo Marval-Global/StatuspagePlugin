@@ -1,0 +1,14 @@
+{
+  "defaultLocale": "en-GB",
+  "resources":
+  [{
+    "en-GB": {
+      "PluginDisplayname": "Statuspage",
+      "UserAPIKey": "User API Key",
+      "StatuspageErrorConfigurationTitle": "The following settings have not been configured:",
+      "StatuspageErrorConfigurationFooter": "Please add these via the plugin page",
+      "StatuspageErrorPopupTitle": "Invalid Statuspage Configuration",
+      "StatuspageNoItems": "No Items"
+    }
+  }]
+}
