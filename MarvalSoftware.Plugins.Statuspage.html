@@ -1,676 +1,289 @@
-﻿<script type="text/javascript" src="template.js"></script>
+ type="text/javascript" src="template.js"></script>
 <template>
-    <style>
-        marvalsoftware-plugins-statuspage {
-            display: block;
-            height: 90%;
-        }
-
-        marvalsoftware-plugins-statuspage > .config-area {
-            padding: 0px 10px 10px 10px;
-            box-shadow: 0 1px 0 0 #ebe8e4;
-        }
-
-        marvalsoftware-plugins-statuspage > .config-area > div {
-            padding: 10px 0 0 0;
-        }
-
-        marvalsoftware-plugins-statuspage > .message-area {
-            display: block;
-            height: 65%;
-            padding: 10px;
-            box-shadow: 0 1px 0 0 #ebe8e4;
-        }
-
-        marvalsoftware-plugins-statuspage > .message-area > .cards {
-            height: 86%;
-            overflow-y: auto;
-            padding: 10px;
-            box-shadow: 0 1px 0 0 #ebe8e4;
-        }
-
-        marvalsoftware-plugins-statuspage > .message-area > .cards .card {
-            background-color: #fff;
-            padding: 1.5rem;
-            margin-bottom: 0.5rem;
-            border: 1px solid #ebe8e4;
-            border-radius: 4px;
-            box-shadow: 0 1px 1px 0 #ebe8e4;
-        }
-
-        marvalsoftware-plugins-statuspage > .message-area > .cards .card .timestamp {
-            font-size: 0.75rem;
-            font-weight: 500;
-            color: #666;
-            width: 10%;
-        }
-
-        marvalsoftware-plugins-statuspage > .message-area > .cards .card .tooltip {
-            position: relative;
-            display: inline-block;
-        }
-
-       marvalsoftware-plugins-statuspage > .message-area > .cards .card .tooltip .tooltiptext {
-            visibility: hidden;
-            width: 120px;
-            background-color: #555;
-            color: #fff;
-            text-align: center;
-            border-radius: 6px;
-            padding: 5px 0;
-            position: absolute;
-            z-index: 1;
-            bottom: 125%;
-            left: 50%;
-            margin-left: -60px;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-       marvalsoftware-plugins-statuspage > .message-area > .cards .card .tooltip .tooltiptext::after {
-            content: "";
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            margin-left: -5px;
-            border-width: 5px;
-            border-style: solid;
-            border-color: #555 transparent transparent transparent;
-        }
-
-       marvalsoftware-plugins-statuspage > .message-area > .cards .card  .tooltip:hover .tooltiptext {
-            visibility: visible;
-            opacity: 1;
-        }
-
-        marvalsoftware-plugins-statuspage > .message-area > .cards .card .status {
-            margin-top: 0.75rem;
-            font-size: 1rem;
-            font-weight: 600;
-        }
-
-        marvalsoftware-plugins-statuspage > .message-area > .cards .card .message {
-            line-height: 22px;
-            margin-right: 6rem;
-            color: #666;
-            font-size: 0.875rem;
-            white-space: pre-line;
-        }
-
-        marvalsoftware-plugins-statuspage > .update-area {
-            height: 20%;
-            padding: 10px 10px 0 10px;
-        }
-
-        marvalsoftware-plugins-statuspage > .update-area textarea {
-            width: 100%;
-            height: 75%;
-            box-sizing: border-box;
-            -moz-box-sizing: border-box;
-            -webkit-box-sizing: border-box;
-            resize: none;
-        }
-
-        marvalsoftware-plugins-statuspage > .update-area .action-buttons {
-            float: right;
-            padding-top: 10px;
-        }
-
-        marvalsoftware-plugins-statuspage > .update-area .action-buttons button {
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 2px;
-            background-color: #6697EA; /*changing colour from green to blue*/
-            cursor:pointer; /*changing to pointer when cursor is over it*/
-        }
-
-        marvalsoftware-plugins-statuspage > .update-area label,
-        marvalsoftware-plugins-statuspage > .message-area label,
-        marvalsoftware-plugins-statuspage > .config-area > div label {
-            font-size: 1rem;
-            font-weight: 600;
-            display: inline-block;
-            width: 120px;
-            padding-bottom: 5px;
-        }
-
-        marvalsoftware-plugins-statuspage > .message-area label {
-            width: 100px !important;
-        }
-
-        marvalsoftware-plugins-statuspage > .message-area > .header {
-            align-items:center
-        }
-
-        marvalsoftware-plugins-statuspage > .message-area > .header a img {
-            position: relative;
-            top: 4px;
-        }
-    </style>
-    <div class="config-area">
-        <div>
-            <label>Pages:</label>
-            <select id="pages">
-                <option value="0"></option>
-            </select>
-        </div>
-        <div>
-            <label>Incidents:</label>
-            <select id="incidents" disabled>
-                <option value="0"></option>
-            </select>
-        </div>
-    </div>
-    <div class="message-area">
-        <div class="header">
-            <label>Update History:</label>
-            <a href="#"><img></a>
-        </div>
-        <div class="cards"></div>
-    </div>
-    <div class="update-area">
-        <label>Update Message:</label>
-        <textarea disabled></textarea>
-        <div class="action-buttons">
-            <button id="send-button" disabled>Send</button>
-        </div>
-    </div>
 </template>
-<template class="cardTemplate">
-    <div class="card">
-        <div class="timestamp tooltip">
-            <span class="tooltiptext"></span>
-        </div>
-        <div class="status"></div>
-        <div class="message"></div>
-    </div>
-</template>
+
 <template class="errorTemplate">
     <style>
-        .marvalsoftware-statuspage-errors h3,
-        .marvalsoftware-statuspage-errors h4 {
+        .Slack-Errors h3,
+        .Slack-Errors h4 {
             padding: 8px 0 8px 0;
         }
 
-        .statuspageConfig > li {
+        .Slack-Config > li {
             display: none;
         }
     </style>
-    <div class="marvalsoftware-statuspage-errors">
+    <div class="Slack-Errors">
         <div class="title">
-            <h3>Ensure all configuration settings are correct.</h3>
+            <h3>@@EnsureConfigurationSettingsCorrect</h3>
         </div>
         <div>
-            <ul class="statuspageConfig">
-                <li id="userAPIKey"> User API Key </li>
+            <ul class="Slack-Config">
+                <li id="slackAppOAuthToken">@@SlackAppOAuthToken</li>
             </ul>
             <h4></h4>
         </div>
     </div>
 </template>
-<template class="miscellaneousErrorsTemplate">
+
+<template class="slackErrorTemplate">
     <style>
-        .marvalsoftware-statuspage-errors h3,
-        .marvalsoftware-statuspage-errors h4 {
+        .Slack-Errors h3,
+        .Slack-Errors h4 {
             padding: 8px 0 8px 0;
         }
 
+        .Slack-Config > li {
+            display: none;
+        }
     </style>
-    <div class="marvalsoftware-statuspage-errors">
+    <div class="Slack-Errors">
         <div class="title">
-            <h3>Error loading Statuspage.</h3>
+            <h3></h3>
         </div>
         <div>
             <label></label>
         </div>
     </div>
 </template>
+
+<template class="slackSuccessTemplate">
+    <style>
+        .Slack-Success h3,
+        .Slack-Success h4 {
+            padding: 8px 0 8px 0;
+        }
+    </style>
+    <div class="Slack-Success">
+        <div class="title">
+            <h3></h3>
+        </div>
+        <div>
+            <label></label>
+        </div>
+    </div>
+</template>
+
 <script>
     (function () {
 
         var MarvalSoftware = window.top.MarvalSoftware;
         var $ = window.top.$;
 
-        MarvalSoftware.Plugins.define("marvalsoftware-plugins-statuspage",
-        {
-            _element: null,
-            _body: null,
-            _refreshLink: null,
-            _refreshElement: null,
-            _cards: null,
-            _card: null,
-            _status: null,
-            _message: null,
-            _pages: null,
-            _incidents: null,
-            _createElement: null,
 
-            init: function () {
-                this._setUpQuickMenu();
-                this._sendInProgress = false; //we will use later to keep track of if we are sending a request
-            },
 
-            _getPluginPath: function () {
-                return this.attributes["data-pluginpath"].value;
-            },
 
-            _getPluginId: function () {
-                return this.attributes["data-pluginid"].value;
-            },
+        MarvalSoftware.Plugins.define("marvalsoftware-plugins-slack",
+            {
+                _requestId: null,
+                _requestNumber: null,
+                _requestAcronym: null,
+                _request: MarvalSoftware.UI.Controls.ScriptManager.getInstance().getPage(),
 
-            _getPluginCulture: function () {
-                return this.attributes["data-pluginculture"].value;
-            },
 
-            _getString: function (key, formatObject) {
-                if (MarvalSoftware.Plugins.PluginResourceManager) {
-                    return MarvalSoftware.Plugins.PluginResourceManager.getInstance()
-                        .getString(this._getPluginId(), key, this._getPluginCulture(), formatObject);
-                } else {
-                    return key;
-                }
-            },
 
-            _renderElement: function () {
-                var template = document.querySelector("template").content;
-                this._element = window.top.document.importNode(template, true);
-                this._body = this._element.querySelector("textarea");
-                this._cards = this._element.querySelector(".cards");
-                this._trimWhiteSpaces(this._body);
-                var eventManager = MarvalSoftware.UI.Dom.EventManager.getInstance();
-                this._createElement = this._element.querySelector(".action-buttons > button");
-                this._refreshLink = this._element.querySelector("a")
-                this._refreshLink.firstChild.setAttribute("src", this._getPluginPath() + "img/refresh_spinner_16.png");
-                this._refreshElement = this._element.querySelector(".message-area > div");
-                this._pages = this._element.querySelector("#pages");
-                this._incidents = this._element.querySelector("#incidents");
-                eventManager.addHandler(this._body, "input", this._enableOrDisableSubmit, this);
-                eventManager.addHandler(this._createElement, "click", this._createElement_click, this);
-                eventManager.addHandler(this._refreshLink, "click", this._refreshCards, this);
-                eventManager.addHandler(this._pages, "change", this._getAllPageIncindents, this);
-                eventManager.addHandler(this._incidents, "change", this._getAllIncindentUpdates, this);
-                this.appendChild(this._element);
-            },
+                init: function () {
+                    var HeaderText = $('#ctl00_ctl00_cph_entityHeaderText').text();
+                    var currentUrl = window.top.location.href;
+                    if (currentUrl.includes("Plugin.aspx") && HeaderText == 'MarvalSoftware.Plugins.Slack') {
+                        $('#ct100_overlay_id1').hide();
+                        $('#ctl00_ctl00_cph_maintenance_worksWithMsm').removeClass('unsigned');
+                        $('#ctl00_ctl00_cph_maintenance_worksWithMsm').addClass('signed');
+                        async function getLatestPluginVersion() {
+                            console.log("func is running");
+                            var url = "https://raw.githubusercontent.com/Marval-Global/SlackPlugin/refs/heads/main/manifest.json";
+                            var githubPluginVersion = await (await fetch(url)).json();
+                            var pagePluginVersion = $('#ctl00_ctl00_cph_maintenance_version').text();
 
-            _trimWhiteSpaces: function (element) {
-                var value = element.value;
-                value = value.replace(/(^\s*)|(\s*$)/gi, "");
-                value = value.replace(/[ ]{2,}/gi, " ");
-                value = value.replace(/\n /, "\n");
-                element.value = value;
-            },
+                            if (pagePluginVersion == githubPluginVersion.Version) {
+                                $('#ctl00_ctl00_cph_maintenance_version').css("color", "green");
+                                $('#ctl00_ctl00_cph_maintenance_version').css("font-weight", "bold");
 
-            _popup: function () {
-                if (!this._pluginWindow) {
-                    this._pluginWindow = new MarvalSoftware.UI.Window({
-                        appendToElement: window.top.document.getElementById("aspnetForm"),
-                        title: "Statuspage",
-                        height: 700,
-                        width: 900,
-                        minHeight: 700,
-                        minWidth: 432,
-                        isResizable: true,
-                        isMaximizable: true,
-                        bodyElement: this
-                    });
-                    this._renderElement();
-                    this._getAllPages();
-                }
-                this._resetPopUpValues();
-                if (!this._pluginWindow.isVisible()) {
-                    this._pluginWindow.centerToViewport();
-                }
-                this._pluginWindow.show();
-            },
+                                $('#uptodatemessage').fadeIn(250);
+                                setTimeout(() => {
+                                    $('#uptodatemessage').fadeOut(1000);
+                                }, 2000);
+                            } else {
+                                $('#ctl00_ctl00_cph_maintenance_version').css("color", "red");
+                                $('#ctl00_ctl00_cph_maintenance_version').css("font-weight", "bold");
+                                $('#ctl00_ctl00_cph_maintenance_version').append(' - Plugin requires updating. Click <a href="https://github.com/Marval-Global/SlackPlugin/releases/latest/download/MarvalSoftware.Plugins.Slack.zip">here</a> for the new version.');
+                            }
+                        }
 
-            _errorPopup: function (result) {
-                var errorTemplate = document.querySelector('.errorTemplate').content;
-                var errorMessages = window.top.document.importNode(errorTemplate, true);
-                if (result) {
-                    for (var item in result) {
-                        var id = "#" + item;
-                        errorMessages.querySelector(id).style.display = "block";
+                        $(document).ready(function () {
+                            console.log("runing");
+                            getLatestPluginVersion();
+                        });
                     }
-                    errorMessages.querySelector('div > h3').textContent = this._getString("@@StatuspageErrorConfigurationTitle");
-                    errorMessages.querySelector('div > h4').textContent = this._getString("@@StatuspageErrorConfigurationFooter");
-                }
-                MarvalSoftware.UI.MessageBox.show(
-                    this._getString("@@StatuspageErrorPopupTitle"),
-                    errorMessages,
-                    MarvalSoftware.UI.MessageBox.Types.ERROR,
-                    [MarvalSoftware.UI.MessageBox.Buttons.OK],
-                    MarvalSoftware.UI.MessageBox.Buttons.OK,
-                    450
-                );
-            },
-
-            _miscellaneousErrorPopup: function (result) {
-                var miscellaneousErrorsTemplate = document.querySelector('.miscellaneousErrorsTemplate').content;
-                var errorMessages = window.top.document.importNode(miscellaneousErrorsTemplate, true);
-                if (result) {
-                    console.log("Hi Setting error as ", result);
-                    errorMessages.querySelector('div > label').textContent = result.responseText;
-                }
-                MarvalSoftware.UI.MessageBox.show(
-                    this._getString("@@StatuspageErrorPopupTitle"),
-                    errorMessages,
-                    MarvalSoftware.UI.MessageBox.Types.ERROR,
-                    [MarvalSoftware.UI.MessageBox.Buttons.OK],
-                    MarvalSoftware.UI.MessageBox.Buttons.OK,
-                    450
-                );
-            },
-
-            _addCard: function (results) {
-                this._clearCards();
-                if (!results.incident_updates || results.incident_updates.length == 0)
-                {
-                    var label = document.createElement("h3")
-                    label.textContent = this._getString("@@StatuspageNoItems");
-                    label.align = "center";
-                    label.style.position = "relative";
-                    label.style.top = "150px";
-                    label.style.color = "#808080";
-                    this._cards.appendChild(label);
-                    return;
-                }
-
-                for (var i = 0; i < results.incident_updates.length; i++) {
-                    this._resetCard()
-                    var status = results.incident_updates[i].status;
-                    var createdOn = results.incident_updates[i].display_at;
-                    this.timestamp.firstElementChild.innerHTML = new Date(createdOn).toDateString() + " " + this._formattedTime(createdOn);
-                    this.timestamp.innerHTML += this._formattedDate(createdOn).toUpperCase();
-                    this.status.innerText = status.charAt(0).toUpperCase() + status.slice(1);
-                    this.message.innerText = results.incident_updates[i].body;
-                    this._cards.appendChild(this.card);
-                }
-
-                this._cards.scrollTop = 0
-            },
-
-            _clearCards: function () {
-                while (this._cards.firstChild) {
-                    this._cards.removeChild(this._cards.firstChild);
-                }
-            },
-
-            _resetCard: function () {
-                var cardTemplate = document.querySelector(".cardTemplate").content;
-                var element = window.top.document.importNode(cardTemplate, true);
-                this.card = element.querySelector(".card");
-                this.timestamp = element.querySelector(".card > .timestamp");
-                this.status = element.querySelector(".card > .status");
-                this.message = element.querySelector(".card > .message");
-            },
-
-            _refreshCards: function () {
-                this._getAllIncindentUpdates();
-                this._enableOrDisableIncidentsOption();
-            },
-
-            _resetPopUpValues: function () {
-                this._pages.selectedIndex = "0";
-                this._body.value = "";
-                this._clearIncidents();
-            },
-
-            _clearIncidents: function () {
-                for (var i = this._incidents.options.length - 1; i >= 0; i--) {
-                    this._incidents.remove(i);
-                }
-
-                var incident = document.createElement("option")
-                incident.id = 0;
-                incident.value = "";
-                this._incidents.add(incident)
-                this._refreshCards();
-            },
-
-            _formattedDate: function (updatedBy) {
-                var minute = 60 * 1000;
-                var hour = minute * 60;
-                var day = hour * 24;
-                var month = day * 30;
-                var year = day * 365;
-                var elapsed = new Date().getTime()- new Date(updatedBy).getTime();
-                if (elapsed < minute) {
-                    return "< 1 min ago" ;
-                }
-                else if (elapsed < hour) {
-                    var calculatedHours = Math.round(elapsed / minute);
-                    return calculatedHours > 1 ? calculatedHours + " min ago" : calculatedHours + " min ago";
-                }
-                else if (elapsed < day) {
-                    var calculatedDays = Math.round(elapsed / hour);
-                    return calculatedDays > 1 ? calculatedDays + " hours ago" : calculatedDays + " hour ago";
-                }
-                else if (elapsed < month) {
-                    var calculatedMonths = Math.round(elapsed / day);
-                    return calculatedMonths > 1 ? calculatedMonths + " days ago" : calculatedMonths + " day ago";
-                }
-                else if (elapsed < year) {
-                    var calculatedMonths = Math.round(elapsed / month);
-                    return calculatedMonths > 1 ? calculatedMonths + " months ago" : calculatedMonths + " month ago";
-                }
-                else {
-                    var calculatedYears = Math.round(elapsed / year);
-                    return calculatedYears > 1 ? calculatedYears + " years ago" : calculatedYears + " year ago";
-                }
-            },
-
-            _addZero: function (i) {
-                if (i < 10) {
-                    i = "0" + i;
-                }
-                return i;
-            },
-
-            _formattedTime: function (value) {
-                var date = new Date(value);
-                return this._addZero(date.getHours()) + ":" + this._addZero(date.getMinutes());
-            },
-
-            _setUpQuickMenu: function () {
-                var styleElement = window.top.document.createElement("style");
-                window.top.document.body.appendChild(styleElement);
-                styleElement.sheet.insertRule(".marvalSoftware-statuspage-quick-menu-item { background-image: url(" + this._getPluginPath() + "img/statuspage_32.png); }", 0);
-
-                var quickMenuId = window.top.document.querySelector(".quickMenu").id;
-                var quickMenu = MarvalSoftware.UI.Controls.ScriptManager.getInstance().getControl(quickMenuId);
-               quickMenu.addMenuItem({
-                   Identifier: "marvalSoftware-statuspage",
-                    Label: this._getString("@@PluginDisplayname"),
-                    HRef: "javascript:void(0);",
-                   CssClass: "marvalSoftware-statuspage-quick-menu-item"
-                });
-                quickMenu.onMenuItemClicked.subscribe(function (sender, e) {
-                    if (e.menuItem.getIdentifier() === "marvalSoftware-statuspage") {
-                        this._preRequisiteCheck();
+                    else {
+                        console.log("init");
+                        this._requestId = this._request._requestId;
+                        this._requestNumber = this._request._originalRequestNumber.toString();
+                        this._requestAcronym = this._request._requestTypeAcronym;
+                        if (this._requestId) {
+                            this._setUpQuickMenu();
+                        }
                     }
                 },
-                    this);
-            },
 
-            _preRequisiteCheck: function (sender, e) {
-                $.ajax({
-                    type: "POST",
-                    url: this._getPluginPath() + "handler/ApiHandler.ashx?action=PreRequisiteCheck",
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    success: function (result) {
-                        if (Object.keys(result).length > 0) {
-                            this._errorPopup(result);
-                        }
-                        else {
-                            this._popup();
-                        }
-                    }.bind(this)
-                });
-            },
 
-            _showSpinner: function () {
-                this._refreshLink.firstChild.removeAttribute("src");
-                this._refreshLink.firstChild.setAttribute("src", this._getPluginPath() + "/img/spinner.gif");
-            },
-
-            _hideSpinner: function () {
-                this._refreshLink.firstChild.removeAttribute("src");
-                this._refreshLink.firstChild.setAttribute("src", this._getPluginPath() + "img/refresh_spinner_16.png");
-            },
-
-            _getAllPageIncindents: function () {
-                $.ajax({
-                    type: "POST",
-                    url: this._getPluginPath() + "handler/ApiHandler.ashx?action=GetAllPageIncidents&pageId=" + this._pages.options[this._pages.selectedIndex].value,
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    success: function (results) {
-                        if (results) {
-                            this._clearIncidents();
-                            for (var i = 0; i < results.length; i++) {
-                                var incident = document.createElement("option");
-                                incident.value = results[i].id;
-                                incident.text = results[i].name;
-                                this._incidents.add(incident);
+                _popup: function () {
+                    MarvalSoftware.UI.MessageBox.show(
+                        this._getString("@@PluginDisplayname"),
+                        this._getString("@@SendToSlack") + " " + this._requestAcronym + "-" + this._requestNumber + "?",
+                        MarvalSoftware.UI.MessageBox.Types.INFORMATION,
+                        [MarvalSoftware.UI.MessageBox.Buttons.YES, MarvalSoftware.UI.MessageBox.Buttons.NO],
+                        MarvalSoftware.UI.MessageBox.Buttons.NO,
+                        450,
+                        MarvalSoftware.createDelegate(function (sender, e) {
+                            if (e.button == MarvalSoftware.UI.MessageBox.Buttons.YES) {
+                                $.ajax({
+                                    type: "POST",
+                                    url: this._getPluginPath() + "handler/ApiHandler.ashx?action=PublishToSlack&requestId=" + this._requestId + "&requestNumber=" + this._requestNumber,
+                                    contentType: "application/json",
+                                    dataType: "json",
+                                    success: function (result) {
+                                        if (result && result.ok) {
+                                            this._slackSuccessPopup();
+                                        }
+                                        else {
+                                            this._slackErrorPopup(result);
+                                        }
+                                    }.bind(this)
+                                });
                             }
-                        }
-                    }.bind(this),
-                    error: function (results) {
-                        this._clearIncidents();
-                    }.bind(this)
-                });
-            },
+                        }, this)
+                    );
+                },
 
-            _getAllIncindentUpdates: function () {
-                var pageId = this._pages.options[this._pages.selectedIndex].value;
-                var incidentNumber = this._incidents.options[this._incidents.selectedIndex].value;
-                this._showSpinner();
-                $.ajax({
-                    type: "POST",
-                    url: this._getPluginPath() + "handler/ApiHandler.ashx?action=GetAllIncidentUpdates&pageId=" + pageId + "&incidentNumber=" + incidentNumber,
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    success: function (results) {
-                        if (results) {
-                            this._addCard(results);
-                        }
-                    }.bind(this),
-                    error: function (result) {
-                        if (result) {
-                            this._addCard(result);
-                        }
-                    }.bind(this)
-                });
-
-                this._enableOrDisableMessageTextArea();
-                this._hideSpinner();
-            },
-
-            _getAllPages: function (sender, e) {
-                $.ajax({
-                    type: "POST",
-                    url: this._getPluginPath() + "handler/ApiHandler.ashx?action=GetAllPages",
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    success: function (results) {
-                        if (results) {
-                            for (var i = 0; i < results.length; i++) {
-                                var page = document.createElement("option");
-                                page.value = results[i].id;
-                                page.text = results[i].name;
-                                this._pages.add(page);
+                _preRequisiteCheck: function (sender, e) {
+                    $.ajax({
+                        type: "POST",
+                        url: this._getPluginPath() + "handler/ApiHandler.ashx?action=PreRequisiteCheck",
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (result) {
+                            if (Object.keys(result).length > 0) {
+                                this._errorPopup(result);
                             }
-                        }
-                    }.bind(this)
-                });
-            },
-
-            _update: function (value) {
-                this._sendInProgress = true; 
-                this._enableOrDisableSubmit();//as send is in progress, we need to disable the button
-
-                const sendBtn = window.top.document.getElementById("send-button"); //need window top as js is running in other window
-                var data = { incident: { body: value } };
-                var pageId = this._pages.options[this._pages.selectedIndex].value;
-                var incidentNumber = this._incidents.options[this._incidents.selectedIndex].value;
-
-
-                $.ajax({
-                    type: "POST",
-                    url: this._getPluginPath() + "handler/ApiHandler.ashx?action=UpdateStatuspageIncident&pageId=" + pageId + "&incidentNumber=" + incidentNumber,
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    data: JSON.stringify(data),
-                    success: function (result, textStatus, xhr) {
-                        //console.log(result.error[0]);
-                        console.log(result.status);
-                        if (result.error) {
-                            this._miscellaneousErrorPopup({  "responseText": xhr.status + " " + result.error.join(", ") });
-                        } else {
-                            this._getAllIncindentUpdates();
-                            this._body.value = "";
-                        }
-                        this._sendInProgress = false;
-                        this._enableOrDisableSubmit();
-                        sendBtn.disabled = false;
-                        console.log("send in progress is: ", this._sendInProgress, "send button status:", sendBtn.disabled);
-                    }.bind(this),
-                    error: function (xhr) {
-                        //console.log(result);
-                        let statusCode = xhr.status;
-                        let message = xhr.responseText;
-                        
-                        try {
-                            var parsed = JSON.parse(message);
-                            if (parsed.error && Array.isArray(parsed.error)) {
-                                message = parsed.error.join(", ")
+                            else {
+                                this._popup();
                             }
-                        } catch (e) {
+                        }.bind(this)
+                    });
+                },
 
+                _slackSuccessPopup: function () {
+                    var slackSuccessTemplate = document.querySelector('.slackSuccessTemplate').content;
+                    var slackSuccessMessage = window.top.document.importNode(slackSuccessTemplate, true);
+                    var slackSuccesTemplateDiv = slackSuccessMessage.querySelector(".Slack-Success");
+                    slackSuccesTemplateDiv.innerHTML = this._preProcessResourceString(slackSuccesTemplateDiv.innerHTML);
+                    slackSuccessMessage.querySelector('div > h3').textContent = this._getString("@@SlackSucceededToPublish");
+                    slackSuccessMessage.querySelector('div > label').textContent = this._getString("@@SlackSuccessMessage", (this._requestAcronym + "-" + this._requestNumber));
+                    MarvalSoftware.UI.MessageBox.show(
+                        this._getString("@@PluginDisplayname"),
+                        slackSuccessMessage,
+                        MarvalSoftware.UI.MessageBox.Types.INFORMATION,
+                        [MarvalSoftware.UI.MessageBox.Buttons.OK],
+                        MarvalSoftware.UI.MessageBox.Buttons.OK,
+                        450
+                    );
+                },
+
+                _slackErrorPopup: function (result) {
+                    var slackErrorTemplate = document.querySelector('.slackErrorTemplate').content;
+                    var slackErrorMessages = window.top.document.importNode(slackErrorTemplate, true);
+                    var slackErrorTemplateDiv = slackErrorMessages.querySelector(".Slack-Errors");
+                    slackErrorTemplateDiv.innerHTML = this._preProcessResourceString(slackErrorTemplateDiv.innerHTML);
+                    slackErrorMessages.querySelector('div > h3').textContent = this._getString("@@SlackFailedToPublish");
+                    slackErrorMessages.querySelector('div > label').textContent = result.error;
+                    MarvalSoftware.UI.MessageBox.show(
+                        this._getString("@@PluginDisplayname"),
+                        slackErrorMessages,
+                        MarvalSoftware.UI.MessageBox.Types.ERROR,
+                        [MarvalSoftware.UI.MessageBox.Buttons.OK],
+                        MarvalSoftware.UI.MessageBox.Buttons.OK,
+                        450
+                    );
+                },
+
+                _errorPopup: function (result) {
+                    var errorTemplate = document.querySelector('.errorTemplate').content;
+                    var errorMessages = window.top.document.importNode(errorTemplate, true);
+                    var errorTemplateDiv = errorMessages.querySelector(".Slack-Errors");
+                    errorTemplateDiv.innerHTML = this._preProcessResourceString(errorTemplateDiv.innerHTML);
+                    if (result) {
+                        for (var item in result) {
+                            var id = "#" + item;
+                            errorMessages.querySelector(id).style.display = "block";
                         }
-                        this._miscellaneousErrorPopup({
-                            "responseText": statusCode + " " + message
-                        })
-                        this._sendInProgress = false;
-                        this._enableOrDisableSubmit();
-                        sendBtn.disabled = false;
-                        
-                    }.bind(this)
-                });
-            },
+                        errorMessages.querySelector('div > h3').textContent = this._getString("@@SettingsNotConfigured");
+                        errorMessages.querySelector('div > h4').textContent = this._getString("@@AddConfigurationViaPluginPage");
+                    }
+                    MarvalSoftware.UI.MessageBox.show(
+                        this._getString("@@InvalidSlackConfiguration"),
+                        errorMessages,
+                        MarvalSoftware.UI.MessageBox.Types.ERROR,
+                        [MarvalSoftware.UI.MessageBox.Buttons.OK],
+                        MarvalSoftware.UI.MessageBox.Buttons.OK,
+                        450
+                    );
+                },
 
-            _createElement_click: function (sender, e) {
-                const sendBtn = window.top.document.getElementById("send-button");//need this as we are running js in other window
-                sendBtn.disabled = true; //disables button
-                this._update(this._body.value);
-                e.preventDefault();
-            },
+                _preProcessResourceString: function (content) {
+                    var resourceTagRegEx = /@@\w+\b/g;
+                    var match = resourceTagRegEx.exec(content);
 
-            _enableOrDisableSubmit: function (sender, e) {
-                console.log("Input:", this._body.value, "InProgress:", this._sendInProgress);
-                if (this._body.value && !this._sendInProgress) {//body has text in it and function is still in progress of sending
-                    this._createElement.removeAttribute('disabled');
-                } else {
-                    this._createElement.setAttribute('disabled', '');
+                    while (match) {
+                        var foundTag = match[0];
+                        var resourcedKey = this._getString(foundTag);
+                        content = content.replace(foundTag, resourcedKey);
+
+                        var match = resourceTagRegEx.exec(content);
+                    }
+
+                    return content;
+                },
+
+                _getPluginPath: function () {
+                    return this.attributes["data-pluginpath"].value;
+                },
+
+                _getPluginId: function () {
+                    return this.attributes["data-pluginid"].value;
+                },
+
+                _getPluginCulture: function () {
+                    return this.attributes["data-pluginculture"].value;
+                },
+
+                _getString: function (key, formatObject) {
+                    if (MarvalSoftware.Plugins.PluginResourceManager) {
+                        return MarvalSoftware.Plugins.PluginResourceManager.getInstance().getString(this._getPluginId(), key, this._getPluginCulture(), formatObject);
+                    } else {
+                        return key;
+                    }
+                },
+
+                _setUpQuickMenu: function () {
+                    var styleElement = window.top.document.createElement("style");
+                    window.top.document.body.appendChild(styleElement);
+                    styleElement.sheet.insertRule(".marvalSoftware-slack-quick-menu-item { background-image: url(" + this._getPluginPath() + "img/slack_32.png); }", 0);
+
+                    var quickMenuId = window.top.document.querySelector(".quickMenu").id;
+                    var quickMenu = MarvalSoftware.UI.Controls.ScriptManager.getInstance().getControl(quickMenuId);
+                    quickMenu.addMenuItem({
+                        Identifier: "marvalSoftware-slack",
+                        Label: this._getString("@@PluginDisplayname"),
+                        HRef: "javascript:void(0);",
+                        CssClass: "marvalSoftware-slack-quick-menu-item"
+                    });
+                    quickMenu.onMenuItemClicked.subscribe(function (sender, e) {
+                        if (e.menuItem.getIdentifier() === "marvalSoftware-slack") {
+                            this._preRequisiteCheck();
+                        }
+                    }, this);
                 }
-            },
-
-            _enableOrDisableIncidentsOption: function (sender, e) {
-                if (this._pages.selectedIndex > 0) {
-                    this._incidents.removeAttribute('disabled');
-                } else {
-                    this._incidents.setAttribute('disabled', '');
-                }
-            },
-
-            _enableOrDisableMessageTextArea: function (sender, e) {
-                if (this._pages.selectedIndex > 0 && this._incidents.selectedIndex > 0) {
-                    this._body.removeAttribute('disabled');
-                } else {
-                    this._body.setAttribute('disabled', '');
-                }
-            }
-        });
+            });
     })();
 </script>
