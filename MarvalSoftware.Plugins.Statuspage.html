@@ -254,7 +254,7 @@
                         $('#ctl00_ctl00_cph_maintenance_worksWithMsm').removeClass('unsigned');
                         $('#ctl00_ctl00_cph_maintenance_worksWithMsm').addClass('signed');
                         async function getLatestPluginVersion() {
-                            console.log("func is running");
+                           
                             var url = "https://raw.githubusercontent.com/Marval-Global/StatuspagePlugin/refs/heads/main/manifest.json";
                             var githubPluginVersion = await (await fetch(url)).json();
                             var pagePluginVersion = $('#ctl00_ctl00_cph_maintenance_version').text();
@@ -275,13 +275,12 @@
                         }
 
                         $(document).ready(function () {
-                            console.log("runing");
+                            
                             getLatestPluginVersion();
                         });
                     }
                     else {
-                        console.log("initalising"); //where are we getting this stuff from?
-                        console.log("we are setting up the quick menu now");
+                        
                         this._setUpQuickMenu();
                         
                     }
@@ -385,7 +384,7 @@
                     var miscellaneousErrorsTemplate = document.querySelector('.miscellaneousErrorsTemplate').content;
                     var errorMessages = window.top.document.importNode(miscellaneousErrorsTemplate, true);
                     if (result) {
-                        console.log("Hi Setting error as ", result);
+                        console.log("We have an error ", result);
                         errorMessages.querySelector('div > label').textContent = result.responseText;
                     }
                     MarvalSoftware.UI.MessageBox.show(
@@ -475,7 +474,7 @@
                     }
                     else if (elapsed < hour) { 
                         var calculatedHours = Math.round(elapsed / minute);
-                        return calculatedHours > 1 ? calculatedHours + " min ago" : calculatedHours + " min ago"; //mins?
+                        return calculatedHours > 1 ? calculatedHours + " minutes ago" : calculatedHours + " min ago"; 
                     }
                     else if (elapsed < day) {
                         var calculatedDays = Math.round(elapsed / hour);
@@ -582,25 +581,27 @@
                     var pageId = this._pages.options[this._pages.selectedIndex].value;
                     var incidentNumber = this._incidents.options[this._incidents.selectedIndex].value;
                     this._showSpinner();
-                    $.ajax({
-                        type: "POST",
-                        url: this._getPluginPath() + "handler/ApiHandler.ashx?action=GetAllIncidentUpdates&pageId=" + pageId + "&incidentNumber=" + incidentNumber,
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                        success: function (results) {
-                            if (results) {
-                                this._addCard(results);
-                            }
-                        }.bind(this),
-                        error: function (result) {
-                            if (result) {
-                                this._addCard(result);
-                            }
-                        }.bind(this)
-                    });
-
-                    this._enableOrDisableMessageTextArea();
-                    this._hideSpinner();
+                    if (incidentNumber) {
+                        $.ajax({
+                            type: "POST",
+                            url: this._getPluginPath() + "handler/ApiHandler.ashx?action=GetAllIncidentUpdates&pageId=" + pageId + "&incidentNumber=" + incidentNumber,
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            success: function (results) {
+                                if (results) {
+                                    this._addCard(results);
+                                }
+                            }.bind(this),
+                            error: function (result) {
+                                if (result) {
+                                    this._addCard(result);
+                                }
+                            }.bind(this)
+                        });
+                    }
+                        this._enableOrDisableMessageTextArea();
+                        this._hideSpinner();
+                    
                 },
 
                 _getAllPages: function (sender, e) {
@@ -639,8 +640,8 @@
                         dataType: "json",
                         data: JSON.stringify(data),
                         success: function (result, textStatus, xhr) {
-                            //console.log(result.error[0]);
-                            console.log(result.status);
+                            
+                            
                             if (result.error) {
                                 this._miscellaneousErrorPopup({ "responseText": xhr.status + " " + result.error.join(", ") });
                             } else {
@@ -650,10 +651,10 @@
                             this._sendInProgress = false;
                             this._enableOrDisableSubmit();
                             sendBtn.disabled = false;
-                            console.log("send in progress is: ", this._sendInProgress, "send button status:", sendBtn.disabled);
+                            
                         }.bind(this),
                         error: function (xhr) {
-                            //console.log(result);
+                            
                             let statusCode = xhr.status;
                             let message = xhr.responseText;
 
@@ -684,7 +685,7 @@
                 },
 
                 _enableOrDisableSubmit: function (sender, e) {
-                    console.log("Input:", this._body.value, "InProgress:", this._sendInProgress);
+                    
                     if (this._body.value && !this._sendInProgress) {//body has text in it and function is still in progress of sending
                         this._createElement.removeAttribute('disabled');
                     } else {
