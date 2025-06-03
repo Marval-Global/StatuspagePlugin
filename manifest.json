@@ -3,7 +3,7 @@
   "Organisation": "MarvalSoftware",
   "DisplayName": "@@PluginDisplayname",
   "Icon": "img/statuspage_16.png",
-  "Version": "1.1.1",
+  "Version": "1.1.2",
   "SupportedVersions": [
     "14.15.0",
     "0.0.0"
