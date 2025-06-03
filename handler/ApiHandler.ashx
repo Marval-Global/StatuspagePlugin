@@ -1,4 +1,4 @@
-﻿BuildRequest
+BuildRequest
 <%@ WebHandler Language="C#" Class="ApiHandler" %>
 
 using System;
@@ -106,9 +106,6 @@ public class ApiHandler : PluginHandler
                 context.Response.Write(this.ProcessRequest(httpWebRequest));
                 break;
             case "UpdateStatuspageIncident":
-                Log.Information("Updating status incident page with " +this.GetPostRequestData());
-                Log.Information("page id " + context.Request.QueryString["pageId"]);
-                Log.Information("incident num " + context.Request.QueryString["incidentNumber"]);
                 httpWebRequest = this.BuildRequest(this.BaseUrl + string.Format("pages/{0}/incidents/{1}", context.Request.QueryString["pageId"], context.Request.QueryString["incidentNumber"]), this.GetPostRequestData(), "PUT");
                 context.Response.Write(this.ProcessRequest(httpWebRequest));
                 break;
@@ -183,19 +180,9 @@ public class ApiHandler : PluginHandler
             HttpContext.Current.Response.Write(res);
             HttpContext.Current.Response.End();
 
-            //return myRes.responseCode.ToString() + res;
             return null;
 
-            /*Log.Information("Have error response, response is " + errStatus);
-            using (var stream = errResp.GetResponseStream())
-            {
-                using (var reader = new StreamReader(stream))
-                {
-                    result = reader.ReadToEnd();
-                    Log.Information("Result from stream error " + result);
-                }
-            }*/
-            //return myRes;
+            
         }
     }
 }
