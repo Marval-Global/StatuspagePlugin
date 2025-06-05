@@ -10,11 +10,12 @@ This plugin allows you to **View** all messages associated with a specific incid
 
 Within Statuspage follow the steps outlined below:
 
-1. Navigate to statuspage.io
-2. Signup
-3. Create a new incident by clicking **Incidents** tab then click **New Incident** button.
-4. Another way to get **User API Key** is to click on the user avatar on the top right corner of the page, then click **Manage account**.
-5. Once the page is loaded click API tab then **User API Key** will be loaded.
+1. Navigate to https://manage.statuspage.io/
+2. Signup / Login
+3. Ensure you have created/joined an organisation with a page. You can see these in the left side bar
+4. Click on your profile icon in the top right corner
+5. Click on API Info
+6. Create an organisation API key
 
 
 ## Compatible Versions
@@ -31,7 +32,7 @@ Please see your MSM documentation for information on how to install plugins.
 
 Once the plugin has been installed you will need to configure the following settings within the plugin page:
 
-+ *User Api Key*: The user API key.
++ *User Api Key*: The organisation API key.
 
 We recommend that you create a new user within Statuspage.
 
@@ -42,3 +43,4 @@ The plugin can be launched from the quick menu after you load a new or existing 
 ## Contributing
 
 We welcome all feedback including feature requests and bug reports. Please raise these as issues on GitHub. If you would like to contribute to the project please fork the repository and issue a pull request.
+
